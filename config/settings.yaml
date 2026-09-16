@@ -1,0 +1,98 @@
+candidate:
+  name: "Mir Furqaan Hassan"
+  degree: "MCA"
+  accepted_degrees:
+    - "MCA"
+    - "Master of Computer Applications"
+    - "Computer Science"
+    - "CS"
+    - "Information Technology"
+    - "IT"
+    - "Data Science"
+    - "Software Engineering"
+  target_experience_min: 0
+  target_experience_max: 1
+  accepted_experience_terms:
+    - "0-1"
+    - "0-2"
+    - "entry level"
+    - "entry-level"
+    - "junior"
+    - "fresher"
+    - "freshers"
+    - "graduate"
+    - "new grad"
+    - "early career"
+  target_roles:
+    - "Data Analyst"
+    - "Business Analyst"
+    - "Software Engineer"
+    - "Software Developer"
+    - "GenAI Developer"
+    - "AI Engineer"
+    - "Junior AI Engineer"
+    - "Junior ML Engineer"
+    - "Python Developer"
+    - "Data Operations"
+    - "Data Entry"
+  target_locations:
+    - "Bangalore"
+    - "Bengaluru"
+    - "Delhi"
+    - "Delhi NCR"
+    - "Noida"
+    - "Gurgaon"
+    - "Chandigarh"
+    - "Hyderabad"
+    - "India"
+    - "Remote"
+  skills:
+    - "Python"
+    - "SQL"
+    - "Excel"
+    - "Power BI"
+    - "Pandas"
+    - "NumPy"
+    - "Matplotlib"
+    - "Seaborn"
+    - "Machine Learning"
+    - "FastAPI"
+    - "REST APIs"
+    - "React"
+    - "JavaScript"
+    - "HTML"
+    - "CSS"
+    - "Bootstrap"
+    - "Git"
+    - "GitHub"
+    - "Docker"
+    - "LLMs"
+    - "RAG"
+    - "Embeddings"
+    - "Vector Databases"
+    - "ChromaDB"
+    - "AI Agents"
+    - "Data Cleaning"
+    - "Data Visualization"
+
+rules:
+  max_job_age_hours: 24
+  min_match_score_for_alert: 0  # Notify for ALL jobs matching target roles (no score threshold)
+  alert_schedule_minutes: 30
+  weights:
+    role: 0.25
+    skills: 0.30
+    experience: 0.20
+    education: 0.10
+    location: 0.10
+    other: 0.05
+
+notification:
+  provider: "meta"  # Options: meta, callmebot, twilio, desktop, console
+  whatsapp_to: "whatsapp:+917889984798"
+  meta_phone_number_id: "1302364852958983"
+  meta_access_token: "EAAXed3zZB4xABSrR2SWpZBfqVhZCPDxRxTkZC6PnBaFZCCVZCdLLkN1cHxUzMvSEIZAw7OUJxoHE1NSPTWUciuStnv1ZAKlyCExIJpWUPVXnROk1UZB9eJhM6zWQsC3fX79TKZBgyqtfGHdNfvcdTI6Ii6LM4ZCXjZAqBmCth4NZAIN0fhWFy8LCYja0mYtHIY3Li5vPWVOfGVfixyoDKJWRlNS3TeIsX9q0gZAmK6YkxJFkClYrzReXcRcs6z1wri76WPTk8z7zH8QBYmKHG1l9sleCov"
+
+ai:
+  provider: "mock"  # Options: mock, gemini, openai
+  gemini_api_key: ""
