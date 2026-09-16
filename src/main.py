@@ -1,9 +1,11 @@
 import sys
+import os
 import argparse
 import logging
 import time
+import threading
 from pathlib import Path
-from datetime import datetime
+from http.server import HTTPServer, BaseHTTPRequestHandler
 
 ROOT_DIR = Path(__file__).resolve().parent.parent
 if str(ROOT_DIR) not in sys.path:
@@ -22,18 +24,36 @@ logging.basicConfig(
 )
 logger = logging.getLogger("AIJobHunter")
 
+class HealthCheckHandler(BaseHTTPRequestHandler):
+    def do_GET(self):
+        self.send_response(200)
+        self.send_header("Content-type", "application/json")
+        self.end_headers()
+        self.wfile.write(b'{"status": "healthy", "service": "AI Job Hunter 24/7 Worker"}')
+
+    def log_message(self, format, *args):
+        return # Suppress noisy HTTP access logs
+
+def start_health_server(port: int = 10000):
+    try:
+        server = HTTPServer(("0.0.0.0", port), HealthCheckHandler)
+        logger.info(f"Health check HTTP server listening on port {port}")
+        server.serve_forever()
+    except Exception as e:
+        logger.warning(f"Health server failed to bind to port {port}: {e}")
+
 def get_notifier(settings):
-    if settings.notification.provider == "whatsapp_direct":
-        from src.notifications.whatsapp_direct import WhatsAppWebDirectProvider
-        return WhatsAppWebDirectProvider(
-            phone_number=settings.notification.whatsapp_to or "+917889984798"
-        )
-    elif settings.notification.provider == "meta":
+    if settings.notification.provider == "meta":
         from src.notifications.meta_whatsapp import MetaWhatsAppCloudAPIProvider
         return MetaWhatsAppCloudAPIProvider(
             phone_number_id=settings.notification.meta_phone_number_id or "",
             access_token=settings.notification.meta_access_token or "",
             to_phone=settings.notification.whatsapp_to or "+917889984798"
+        )
+    elif settings.notification.provider == "whatsapp_direct":
+        from src.notifications.whatsapp_direct import WhatsAppWebDirectProvider
+        return WhatsAppWebDirectProvider(
+            phone_number=settings.notification.whatsapp_to or "+917889984798"
         )
     elif settings.notification.provider == "desktop":
         from src.notifications.desktop import WindowsDesktopNotificationProvider
@@ -96,6 +116,11 @@ def main():
     if args.test_alert:
         send_test_alert(settings)
     elif args.daemon:
+        # Start lightweight HTTP Health Server for Render / Cloud services
+        port = int(os.getenv("PORT", 10000))
+        health_thread = threading.Thread(target=start_health_server, args=(port,), daemon=True)
+        health_thread.start()
+
         logger.info(f"Launching AI Job Hunter 24/7 Daemon (Interval: {settings.rules.alert_schedule_minutes} mins)")
         while True:
             try:
