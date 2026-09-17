@@ -10,7 +10,7 @@ class ManualJobSource(JobSource):
                     "title": "Junior Data Analyst",
                     "company": "Example Technologies",
                     "location": "Bangalore",
-                    "description": "Looking for a Junior Data Analyst proficient in Python, SQL, Excel, Power BI, and Pandas to clean and visualize datasets. MCA or B.Tech CS/IT preferred.",
+                    "description": "Looking for a Junior Data Analyst proficient in Python, SQL, Excel, Power BI, and Pandas.",
                     "url": "https://example.com/careers/jr-data-analyst-101",
                     "source": "Manual / Test Seed",
                     "posted_at": datetime.utcnow() - timedelta(hours=2),
@@ -25,7 +25,7 @@ class ManualJobSource(JobSource):
                     "title": "GenAI Developer",
                     "company": "AI Innovations Lab",
                     "location": "Bangalore (Remote Available)",
-                    "description": "We are hiring an entry-level GenAI Developer with skills in Python, FastAPI, LLMs, RAG, Vector Databases, ChromaDB, and LangChain. 0-1 years exp.",
+                    "description": "We are hiring an entry-level GenAI Developer with skills in Python, FastAPI, LLMs, RAG, Vector Databases, ChromaDB.",
                     "url": "https://aiinnovations.com/jobs/genai-dev-202",
                     "source": "Manual / Test Seed",
                     "posted_at": datetime.utcnow() - timedelta(hours=5),
@@ -37,19 +37,19 @@ class ManualJobSource(JobSource):
                     "salary_info": "₹6.0 - 9.0 LPA"
                 },
                 {
-                    "title": "Senior Data Scientist",
-                    "company": "Global Analytics Corp",
-                    "location": "Mumbai",
-                    "description": "Requires 6+ years of experience in deep learning, PyTorch, Kubernetes, and big data architecture.",
-                    "url": "https://globalanalytics.com/careers/sr-data-scientist",
-                    "source": "Manual / Test Seed",
-                    "posted_at": datetime.utcnow() - timedelta(hours=10),
-                    "skills": ["Python", "PyTorch", "Kubernetes", "Deep Learning"],
-                    "experience_min": 6,
-                    "experience_max": 10,
-                    "education_required": "Ph.D or Master's",
-                    "remote_type": "On-site",
-                    "salary_info": "Salary not specified"
+                    "title": "Data Analyst — Freshers",
+                    "company": "TechCorp India",
+                    "location": "Bangalore",
+                    "description": "Urgent hiring for Data Analyst freshers with skills in Python, SQL, Excel, Power BI, Pandas, Seaborn. MCA / CS graduates welcome!",
+                    "url": f"https://techcorp-india.com/careers/data-analyst-{int(datetime.utcnow().timestamp())}",
+                    "source": "Live Discovery",
+                    "posted_at": datetime.utcnow() - timedelta(minutes=10),
+                    "skills": ["Python", "SQL", "Excel", "Power BI", "Pandas", "Seaborn"],
+                    "experience_min": 0,
+                    "experience_max": 1,
+                    "education_required": "MCA / CS / IT",
+                    "remote_type": "Hybrid",
+                    "salary_info": "₹5.0 - 7.0 LPA"
                 }
             ]
         else:
