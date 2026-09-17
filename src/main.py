@@ -82,11 +82,13 @@ def run_pipeline_once(settings):
     from src.sources.rss_source import PublicRSSJobSource
     from src.sources.email_source import EmailJobAlertSource
     from src.sources.naukri_source import PublicNaukriJobSource
+    from src.sources.linkedin_rss_source import LinkedInPublicJobSource
     
     sources = [
         ManualJobSource(),
         PublicRSSJobSource(),
         PublicNaukriJobSource(),
+        LinkedInPublicJobSource(),
         EmailJobAlertSource(
             imap_server=os.getenv("EMAIL_SERVER", ""),
             email_user=os.getenv("EMAIL_USER", ""),
