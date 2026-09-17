@@ -91,7 +91,7 @@ notification:
   provider: "meta"  # Options: meta, callmebot, twilio, desktop, console
   whatsapp_to: "whatsapp:+917889984798"
   meta_phone_number_id: "1302364852958983"
-  meta_access_token: "EAAXed3zZB4xABSrR2SWpZBfqVhZCPDxRxTkZC6PnBaFZCCVZCdLLkN1cHxUzMvSEIZAw7OUJxoHE1NSPTWUciuStnv1ZAKlyCExIJpWUPVXnROk1UZB9eJhM6zWQsC3fX79TKZBgyqtfGHdNfvcdTI6Ii6LM4ZCXjZAqBmCth4NZAIN0fhWFy8LCYja0mYtHIY3Li5vPWVOfGVfixyoDKJWRlNS3TeIsX9q0gZAmK6YkxJFkClYrzReXcRcs6z1wri76WPTk8z7zH8QBYmKHG1l9sleCov"
+  meta_access_token: "EAAXed3zZB4xABSj8AABsvI0PJ1XxgGJGIEXCaVs1yuZAq45bUZAC3LdTZCVp0e8XyJQBEXF1nnXEYanaBXjZC1L2SsldrFZBdvCmRlDMgOiR7y5EvezWeBeM7O4FUZBjzJ5WSKQ9Ee85gFCJNGy9xJmtckhSKPiIR8rS0ZAD4nGhDkTOTdwCXcCjtXJ5sl6a0bbnHB3sCa6UZCADS2eJXlfhQjXeb9DlgcKQLVvwrbAQAcJjLGZBdbbekfXsh1rvJDRjA7SNFqU7UH1WgMcZATE3OwPRAZDZD"
 
 ai:
   provider: "mock"  # Options: mock, gemini, openai

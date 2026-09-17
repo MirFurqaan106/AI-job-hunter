@@ -14,8 +14,8 @@ class PublicRSSJobSource(JobSource):
     def __init__(self):
         self.feed_urls = [
             "https://remotive.com/remote-jobs/feed",
-            "https://jobspress.io/feed/",
-            "https://weworkremotely.com/categories/remote-programming-jobs.rss"
+            "https://weworkremotely.com/categories/remote-programming-jobs.rss",
+            "https://remoteok.com/remote-jobs.rss"
         ]
 
     def parse_rss_item(self, item: ET.Element, source_name: str) -> Dict[str, Any]:
@@ -24,7 +24,6 @@ class PublicRSSJobSource(JobSource):
         desc = item.findtext("description") or ""
         pub_date_str = item.findtext("pubDate") or ""
 
-        # Parse pubDate or fallback to now
         posted_at = datetime.utcnow()
         if pub_date_str:
             try:
