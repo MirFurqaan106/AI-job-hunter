@@ -46,10 +46,17 @@ class JobPipelineService:
                         stats["rejected_stale"] += 1
                         continue
 
-                    # 2. Content Hashing & Deduplication
+                    # 2. Strict Location Check (Only India & Remote)
+                    location = job_dict.get("location", "Location Not Specified")
+                    loc_lower = location.lower()
+                    if "international" in loc_lower or any(bad_loc in loc_lower for bad_loc in ["belfast", "london", "united kingdom", "uk only", "us only"]):
+                        if "india" not in loc_lower and "remote" not in loc_lower:
+                            logger.info(f"Skipping non-India job location: {location} for {job_dict.get('title')}")
+                            continue
+
+                    # 3. Content Hashing & Deduplication
                     title = job_dict.get("title", "Unknown Title")
                     company = job_dict.get("company", "Unknown Company")
-                    location = job_dict.get("location", "Location Not Specified")
                     description = job_dict.get("description", "")
                     url = job_dict.get("url", "")
 

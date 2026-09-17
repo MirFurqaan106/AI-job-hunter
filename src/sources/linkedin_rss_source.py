@@ -32,8 +32,8 @@ class LinkedInPublicJobSource(JobSource):
 
         for role, location in self.target_searches:
             try:
-                # Query public LinkedIn jobs RSS/Search feed
-                query = urllib.parse.quote(f'site:linkedin.com/jobs/view "{role}" "{location}"')
+                # Restrict search query to last 24h (when:1d) and India/Remote locations
+                query = urllib.parse.quote(f'site:linkedin.com/jobs/view "{role}" "{location}" when:1d')
                 url = f"https://news.google.com/rss/search?q={query}&hl=en-IN&gl=IN&ceid=IN:en"
 
                 res = requests.get(url, headers=headers, timeout=10)
@@ -45,6 +45,18 @@ class LinkedInPublicJobSource(JobSource):
                             raw_title = item.findtext("title") or "LinkedIn Job"
                             raw_link = item.findtext("link") or ""
                             desc = item.findtext("description") or ""
+                            pub_date_str = item.findtext("pubDate") or ""
+
+                            posted_at = None
+                            if pub_date_str:
+                                try:
+                                    from email.utils import parsedate_to_datetime
+                                    posted_at = parsedate_to_datetime(pub_date_str).replace(tzinfo=None)
+                                except Exception:
+                                    posted_at = None
+
+                            if not posted_at:
+                                posted_at = datetime.utcnow()
 
                             # Extract company & title
                             title = raw_title
@@ -53,6 +65,12 @@ class LinkedInPublicJobSource(JobSource):
                                 parts = raw_title.split(" - ")
                                 title = parts[0].strip()
                                 company = parts[1].strip()
+
+                            # Filter out non-India/non-target international locations if title mentions overseas cities
+                            title_lower = title.lower()
+                            if any(city in title_lower for city in ["belfast", "london", "united kingdom", "uk", "us", "usa", "germany", "berlin", "singapore"]):
+                                if "india" not in title_lower and "remote" not in title_lower:
+                                    continue
 
                             # Try to extract direct LinkedIn job URL from description or link
                             linkedin_match = re.search(r'https?://[a-zA-Z0-9\.\-]*linkedin\.com/jobs/view/[0-9]+', desc + " " + raw_link)
@@ -65,7 +83,7 @@ class LinkedInPublicJobSource(JobSource):
                                 "description": f"LinkedIn Job Posting for {title} at {company}. {desc}",
                                 "url": final_url,
                                 "source": "LinkedIn Public Source",
-                                "posted_at": datetime.utcnow(), # Treated as current discovery
+                                "posted_at": posted_at,
                                 "skills": ["Python", "SQL", "Excel", "Power BI", "GenAI", "FastAPI"],
                                 "experience_min": 0,
                                 "experience_max": 1,

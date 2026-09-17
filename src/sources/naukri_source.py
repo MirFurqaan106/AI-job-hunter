@@ -31,7 +31,7 @@ class PublicNaukriJobSource(JobSource):
 
         for query in self.search_queries:
             try:
-                encoded = urllib.parse.quote(query)
+                encoded = urllib.parse.quote(f"{query} when:1d")
                 feed_url = f"https://news.google.com/rss/search?q={encoded}+site:naukri.com&hl=en-IN&gl=IN&ceid=IN:en"
                 
                 res = requests.get(feed_url, headers=headers, timeout=10)
@@ -43,6 +43,18 @@ class PublicNaukriJobSource(JobSource):
                             title = item.findtext("title") or "Naukri Job"
                             link = item.findtext("link") or ""
                             desc = item.findtext("description") or ""
+                            pub_date_str = item.findtext("pubDate") or ""
+
+                            posted_at = None
+                            if pub_date_str:
+                                try:
+                                    from email.utils import parsedate_to_datetime
+                                    posted_at = parsedate_to_datetime(pub_date_str).replace(tzinfo=None)
+                                except Exception:
+                                    posted_at = None
+
+                            if not posted_at:
+                                posted_at = datetime.utcnow()
 
                             # Skip generic search list pages (e.g. "19308 Python Jobs", "Jobs In India")
                             title_lower = title.lower()
@@ -67,7 +79,7 @@ class PublicNaukriJobSource(JobSource):
                                 "description": f"Naukri Job: {title}. {desc}",
                                 "url": final_url,
                                 "source": "Naukri Direct Source",
-                                "posted_at": datetime.utcnow(),
+                                "posted_at": posted_at,
                                 "skills": ["Python", "SQL", "Excel", "Power BI", "Data Analyst"],
                                 "experience_min": 0,
                                 "experience_max": 1,

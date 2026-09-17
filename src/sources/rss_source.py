@@ -24,13 +24,17 @@ class PublicRSSJobSource(JobSource):
         desc = item.findtext("description") or ""
         pub_date_str = item.findtext("pubDate") or ""
 
-        posted_at = datetime.utcnow()
+        posted_at = None
         if pub_date_str:
             try:
                 from email.utils import parsedate_to_datetime
                 posted_at = parsedate_to_datetime(pub_date_str).replace(tzinfo=None)
             except Exception:
-                posted_at = datetime.utcnow()
+                posted_at = None
+
+        # Fallback to current time only if pubDate is entirely missing
+        if not posted_at:
+            posted_at = datetime.utcnow()
 
         company = "Tech Company"
         if " - " in title:
@@ -42,10 +46,19 @@ class PublicRSSJobSource(JobSource):
             title = parts[0].strip()
             company = parts[1].strip()
 
+        # Check description and title for location context
+        content_lower = f"{title} {desc}".lower()
+        location = "Remote / India"
+        
+        # If explicitly outside target region and not remote for India, mark clearly
+        if any(country in content_lower for country in ["london", "united kingdom", "uk only", "us only", "usa only", "canada", "germany", "australia"]):
+            if "india" not in content_lower and "worldwide" not in content_lower and "anywhere" not in content_lower:
+                location = "International (Non-India)"
+
         return {
             "title": title,
             "company": company,
-            "location": "Remote / India",
+            "location": location,
             "description": desc,
             "url": link,
             "source": source_name,
