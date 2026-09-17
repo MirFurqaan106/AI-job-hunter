@@ -78,7 +78,19 @@ def run_pipeline_once(settings):
     logger.info("Starting job discovery pipeline run...")
     notifier = get_notifier(settings)
     service = JobPipelineService(settings, notifier)
-    sources = [ManualJobSource()]
+    
+    from src.sources.rss_source import PublicRSSJobSource
+    from src.sources.email_source import EmailJobAlertSource
+    
+    sources = [
+        ManualJobSource(),
+        PublicRSSJobSource(),
+        EmailJobAlertSource(
+            imap_server=os.getenv("EMAIL_SERVER", ""),
+            email_user=os.getenv("EMAIL_USER", ""),
+            email_pass=os.getenv("EMAIL_PASSWORD", "")
+        )
+    ]
 
     stats = service.process_jobs(sources)
     logger.info(f"Pipeline run completed. Stats: {stats}")
